@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}To Do Home{% endblock %}
+
+{% block content %}
+<div class="container h-100">
+   <div class="row h-100 justify-content-center align-items-center">
+       <div class="col-10 col-md-8 col-lg-6">
+            <!-- Form -->
+            <form class="form-example" method="POST">
+              {% csrf_token %}
+                <!-- Input fields -->
+                <div class="form-group">
+                    <input type="text" class="form-control username" id="username" placeholder="Task To Do" name="task">
+                </div>
+                <div class="form-group">
+                  <input type="datetime-local" name="date_added">
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary btn-customized">Add To the List</button>
+              </div>
+                <!-- End input fields -->
+            </form>
+            <!-- Form end -->
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissable" role="alert">
+            <button class="close" data-dismiss="alert">
+                <small><sup>X</sup></small>
+            </button>
+                {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if todo_task %}
+        <table class="table table-borderless table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Task</th>
+                    <th scope="col">Date Added</th>
+                    <th scope="col">Time Added</th>
+                    <th scope="col">Completed/ Not</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            {% for lists in todo_task %}
+                {% if lists.finish %}
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="striker"><a style="color: black; text-decoration: none" href="{% url 'edit' lists.id %}">{{ lists.task }}</a></th>
+                            <td>{{ lists.date_sep }}</td>
+                            <td>{{ lists.time_sep }}</td>
+                            <td><button type="button" class="btn btn-success"><a style="text-decoration: none; color: black;" href="{% url 'not_completed' lists.id %}" >Completed</a></button></td>
+                            <td><button type="button" class="btn btn-danger"><a style="text-decoration: none; color: black;" href="{% url 'delete' lists.id %}">Delete</a></button></td>
+                        </tr>
+                    </tbody>
+                {% else %}
+                    <tbody>
+                        <tr>
+                            <th scope="row"><a style="color: black; text-decoration: none;" href="{% url 'edit' lists.id %}">{{ lists.task }}</a></th>
+                            <td>{{ lists.date_sep }}</td>
+                            <td>{{ lists.time_sep }}</td>
+                            <td><button type="button" class="btn btn-warning"><a style="text-decoration: none; color: black;" href="{% url 'completed' lists.id %}">Not Completed</a></button></td>
+                             <td class="note"><button type="button" class="btn btn-danger"><a style="text-decoration: none; color: black;" href="{% url 'delete' lists.id %}">Delete</a></button></td>
+                        </tr>
+                    </tbody>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% else %}
+        <h3>The to-do task list is empty. Please add Something to it.</h3>
+    {% endif %}
+
+{% endblock %}

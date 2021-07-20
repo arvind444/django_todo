@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit{% endblock %}
+
+{% block content %}
+	{% if item %}
+		<div class="container h-100">
+   			<div class="row h-100 justify-content-center align-items-center">
+       			<div class="col-10 col-md-8 col-lg-6">
+            		<!-- Form -->
+            		<form class="form-example" method="POST">
+              			{% csrf_token %}
+		                <!-- Input fields -->
+		                <div class="form-group">
+		                    <input type="text" class="form-control username" id="username" placeholder="{{ item.task }}" value="{{item.task}}" name="task">
+		                </div>
+		                <div class="form-group">
+		                  <input type="datetime-local" name="date_added" placeholder="{{ item.date_added }}">
+		                </div>
+		                <div class="form-group">
+		                	<input type="hidden" placeholder="{{ item.finish }}" value="{{ item.finish }}" name="finish">
+		                </div>
+		                <div class="text-center">
+		                  <button type="submit" class="btn btn-primary btn-customized">Edit Item</button>
+		                </div>
+                        <!-- End input fields -->
+            		</form>
+           		    <!-- Form end -->
+        		</div>
+    		</div>
+		</div>
+	{% endif %}
+{% endblock %}
